@@ -5,7 +5,6 @@ async function fetch_question() {
             throw new Error(`Error! status: ${response.status}`);
         }
         const question = await response.json();
-        console.log(question);
         return (question);
     } catch (err) {
         console.log(err);
@@ -41,10 +40,11 @@ function Timer(fn, t) {
 }
 
 const labels = ['#first', '#second', '#third', '#fourth'];
+var question;
 
 const display_question = async ()  => {
     const q = document.querySelector('#q');
-    const question = await fetch_question();
+    question = await fetch_question();
     q.innerHTML = `${question.q}`;
     const answers = question.opt;
     let show_answers = document.getElementsByName('multiple');
@@ -58,9 +58,30 @@ var timer = new Timer(function() {
     display_question();
 }, 8000);
 
-document.querySelector('#next').addEventListener("click", function() {
+
+document.querySelector('#send').addEventListener("click", async () => {
+    const radioAnswers = document.getElementsByName('multiple');
+    for (let i = 0; i < radioAnswers.length; i++) {
+        if (radioAnswers[i].checked) {
+            const answer = radioAnswers[i].value;
+            const response = await fetch('http://localhost:5000/api/check-answer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    q_id: question.id,
+                    answer: answer
+                })
+            });
+            const result = await response.json();
+            if (result.success) {
+                alert('EXITOOOOOOO!!!!!');
+            }
+        }
+    }
     display_question();
-    timer.reset()
+    timer.reset();
 });
 
 display_question();
