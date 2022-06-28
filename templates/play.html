@@ -4,10 +4,30 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='play.css') }}">
     <title>Movietrivia - Play</title>
 </head>
 <body>
-    <h1>ACA SE VA A JUGAR</h1>
+    <h1>JUEGA!</h1>
+    <div id="container">
+        <div class="question">
+            <p id="q"></p>
+        </div>
+        <div class="answer">
+            <input type="radio" id="radioFirst" name="multiple">
+            <label  for="radioFirst" id="first"></label>
+
+            <input type="radio" id="radioSecond" name="multiple">
+            <label  for="radioSecond" id="second"></label>
+
+            <input type="radio" id="radioThird" name="multiple">
+            <label for="radioThird" id="third"></label>
+
+            <input type="radio" id="radioFourth" name="multiple">
+            <label for="radioFourth" id="fourth"></label>
+        </div>
+        <button id="next">Siguiente</button>
+    </div>
     <script src="{{ url_for('static', filename='new_match.js')}}"></script>
 </body>
 </html>

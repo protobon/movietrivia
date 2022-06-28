@@ -56,9 +56,16 @@ def user_auth():
 
 
 @app.route("/api/fetch-question", methods=["GET"], strict_slashes=False)
-def match_data():
-    """Get questions for new match"""
+def get_question():
+    """Sends a question object in json format"""
     return jsonify(db.fetch_question())
+
+
+@app.route("/api/check-answer", methods=["POST"], strict_slashes=False)
+def check_answer():
+    """Checks the answer sent for the question (id match)"""
+    body = request.get_json()
+    return jsonify(db.check_answer(body["q_id"], body["answer"]))
 
 
 if __name__ == "__main__":

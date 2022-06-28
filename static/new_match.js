@@ -13,16 +13,6 @@ async function fetch_question() {
 }
 
 
-const div = document.createElement("div");
-const p = document.createElement("p");
-const next = document.createElement("button");
-next.setAttribute("id", "next");
-next.innerText = "Siguiente";
-div.appendChild(p);
-div.appendChild(next);
-document.body.appendChild(div);
-
-
 function Timer(fn, t) {
     var timerObj = setInterval(fn, t);
 
@@ -50,19 +40,28 @@ function Timer(fn, t) {
     }
 }
 
-const display_question = async (tag)  => {
+const labels = ['#first', '#second', '#third', '#fourth'];
+
+const display_question = async ()  => {
+    const q = document.querySelector('#q');
     const question = await fetch_question();
-    tag.innerHTML = question.q;
+    q.innerHTML = `${question.q}`;
+    const answers = question.opt;
+    let show_answers = document.getElementsByName('multiple');
+    for (let i = 0; i < answers.length; i++) {
+        show_answers[i].value = answers[i];
+        document.querySelector(labels[i]).innerHTML = answers[i];
+    }
 }
 
 var timer = new Timer(function() {
-    display_question(p);
-}, 3000);
+    display_question();
+}, 8000);
 
 document.querySelector('#next').addEventListener("click", function() {
-    display_question(p);
+    display_question();
     timer.reset()
 });
 
-display_question(p);
+display_question();
 timer.start();

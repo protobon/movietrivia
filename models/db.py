@@ -11,6 +11,8 @@ from sqlalchemy.sql.expression import func
 from models.user import User
 from models.question import Question
 
+import random
+
 
 class DB:
     """DB class
@@ -68,10 +70,37 @@ class DB:
         self._session.commit()
         return None
 
+    def insert_data(self, filename: str) -> Question:
+        try:
+            with open(filename, 'r') as f:
+                for line in f.readlines()[:-1]:
+                    qa = line.split('?')
+                    new_question = Question(
+                        q=qa[0] + '?',
+                        a=qa[1].split(',')[0].strip(),
+                        type='mul',
+                        opt=qa[1][:-1].strip()
+                    )
+                    self._session.add(new_question)
+                self._session.commit()
+                return new_question
+        except Exception as e:
+            print(e)
+
     def fetch_question(self) -> list:
         """method to retrieve random question
         for using in a trivia match"""
         query = self._session.query(Question)\
                     .order_by(func.rand()).limit(1)
-        question = query.one()
-        return question.to_dict()
+        question = query.one().to_dict()
+        question['opt'] = [op.strip() for op in question['opt'].split(',')]
+        random.shuffle(question['opt'])
+        return question
+
+    def check_answer(self, question_id: int, answer: str) -> dict:
+        """method to check if the answer sent is valid"""
+        question = self._session.query(Question).get(question_id)
+        success = True
+        if question.a.strip() != answer:
+            success = False
+        return {"success": success}
