@@ -39,50 +39,68 @@ function Timer(fn, t) {
     }
 }
 
+// Render question and multiple choice answer
 const labels = ['#first', '#second', '#third', '#fourth'];
 var question;
+var count = 0;
+var radioAnswers = document.getElementsByName('multiple');
 
 const display_question = async ()  => {
     const q = document.querySelector('#q');
     question = await fetch_question();
     q.innerHTML = `${question.q}`;
     const answers = question.opt;
-    let show_answers = document.getElementsByName('multiple');
     for (let i = 0; i < answers.length; i++) {
-        show_answers[i].value = answers[i];
+        radioAnswers[i].value = answers[i];
         document.querySelector(labels[i]).innerHTML = answers[i];
     }
 }
 
-var timer = new Timer(function() {
-    display_question();
-}, 8000);
+// Save each question result in Array to calculate at the end.
+var results = [];
 
-
-document.querySelector('#send').addEventListener("click", async () => {
-    const radioAnswers = document.getElementsByName('multiple');
+const save_result = () => {
     for (let i = 0; i < radioAnswers.length; i++) {
         if (radioAnswers[i].checked) {
-            const answer = radioAnswers[i].value;
-            const response = await fetch('http://localhost:5000/api/check-answer', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    q_id: question.id,
-                    answer: answer
-                })
-            });
-            const result = await response.json();
-            if (result.success) {
-                alert('EXITOOOOOOO!!!!!');
-            }
+            results.push([radioAnswers[i].value, question.id]);
+            count++;
         }
     }
-    display_question();
-    timer.reset();
+}
+
+// Fetch score from the game just played
+const get_score = async () => {
+    const response = await fetch('http://localhost:5000/api/calculate-score', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(results)
+    });
+    const result = await response.json();
+    alert(result.score);
+    return result;
+}
+
+
+document.querySelector('#send').addEventListener("click", () => {
+    save_result();
+    if (count === 5) {
+        timer.stop();
+        finish_game();
+    } else {
+        display_question();
+        timer.reset();
+    }
 });
 
-display_question();
-timer.start();
+const finish_game = () => {
+    get_score();
+}
+
+var timer = new Timer(function() {
+    document.querySelector('#send').click();
+}, 5000);
+
+
+document.querySelector('#send').click();

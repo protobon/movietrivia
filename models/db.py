@@ -97,10 +97,11 @@ class DB:
         random.shuffle(question['opt'])
         return question
 
-    def check_answer(self, question_id: int, answer: str) -> dict:
+    def get_match_score(self, answers: list) -> dict:
         """method to check if the answer sent is valid"""
-        question = self._session.query(Question).get(question_id)
-        success = True
-        if question.a.strip() != answer:
-            success = False
-        return {"success": success}
+        score: int = 0
+        for answer in answers:
+            question = self._session.query(Question).get(answer[1])
+            if question.a.strip() == answer[0]:
+                score += 50
+        return {"score": score}

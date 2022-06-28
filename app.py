@@ -61,75 +61,13 @@ def get_question():
     return jsonify(db.fetch_question())
 
 
-@app.route("/api/check-answer", methods=["POST"], strict_slashes=False)
-def check_answer():
-    """Checks the answer sent for the question (id match)"""
-    body = request.get_json()
-    return jsonify(db.check_answer(body["q_id"], body["answer"]))
+@app.route("/api/calculate-score", methods=["POST"], strict_slashes=False)
+def check_answers():
+    """Checks all the answers in one game and calculates the total score"""
+    results = request.get_json()
+    score = db.get_match_score(results)
+    return jsonify(score)
 
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
-
-# @app.route("/api/sessions/new", methods=["POST"], strict_slashes=False)
-# def login():
-#     """Creates a new session for user"""
-#     username = request.form["username"]
-#     password = request.form["password"]
-#
-#     if not AUTH.valid_login(username, password):
-#         abort(401)
-#
-#     session_id = AUTH.create_session(username)
-#     res = jsonify({"username": username, "message": "logged in"})
-#     res.set_cookie("session_id", session_id)
-#     return res
-
-
-# @app.route("/api/sessions/delete", methods=["DELETE"], strict_slashes=False)
-# def logout():
-#     """Destroys a user's session"""
-#     session_id = request.cookies.get("session_id")
-#     user = AUTH.get_user_from_session_id(session_id)
-#
-#     if user:
-#         AUTH.destroy_session(user.id)
-#         return redirect("/")
-#
-#     abort(403)
-
-
-# @app.route("/api/profile", methods=["GET"], strict_slashes=False)
-# def profile():
-#     """Finds user from session id"""
-#     session_id = request.cookies.get("session_id")
-#     user = AUTH.get_user_from_session_id(session_id)
-#     if user:
-#         return jsonify({"username": user.username}), 200
-#
-#     abort(403)
-
-
-# @app.route("/api/reset_password", methods=["POST"], strict_slashes=False)
-# def get_reset_password_token():
-#     """returns a reset token to user from username"""
-#     username = request.form["username"]
-#     try:
-#         reset_token = AUTH.get_reset_password_token(username)
-#         return jsonify({"username": username, "reset_token": reset_token})
-#     except ValueError:
-#         abort(403)
-
-
-# @app.route("/api/reset_password", methods=["PUT"], strict_slashes=False)
-# def update_password():
-#     """updates a user password"""
-#     username = request.form["username"]
-#     reset_token = request.form["reset_token"]
-#     new_password = request.form["new_password"]
-#
-#     try:
-#         AUTH.update_password(reset_token, new_password)
-#         return jsonify({"username": username, "message": "Password updated"}), 200
-#     except ValueError:
-#         abort(403)
