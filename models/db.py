@@ -98,7 +98,7 @@ class DB:
         return question
 
     def get_match_score(self, answers: list) -> dict:
-        """method to check if the answer sent is valid"""
+        """method to get the total score of one played match"""
         score: int = 0
         for answer in answers:
             question = self._session.query(Question).get(answer[1])

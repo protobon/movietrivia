@@ -8,26 +8,47 @@
     <title>Movietrivia - Play</title>
 </head>
 <body>
-    <h1>JUEGA!</h1>
-    <div id="container">
-        <div class="question">
-            <p id="q"></p>
+    <section class="contenedor-fondo-animado">
+        <div class="animacion">
+            <!--  -->
+            <span class="uno"></span>
+            <span class="dos"></span>
+            <span class="tres"></span>
+            <span class="cuatro"></span>
+            <!--  -->
+            <span class="uno"></span>
+            <span class="dos"></span>
+            <span class="tres"></span>
+            <span class="cuatro"></span>
+            <!--  -->
+            <span class="uno"></span>
+            <span class="dos"></span>
+            <span class="tres"></span>
+            <span class="cuatro"></span>
         </div>
-        <div class="answer">
-            <input type="radio" id="radioFirst" name="multiple">
-            <label  for="radioFirst" id="first"></label>
-
-            <input type="radio" id="radioSecond" name="multiple">
-            <label  for="radioSecond" id="second"></label>
-
-            <input type="radio" id="radioThird" name="multiple">
-            <label for="radioThird" id="third"></label>
-
-            <input type="radio" id="radioFourth" name="multiple">
-            <label for="radioFourth" id="fourth"></label>
+        <div class="seccion-contenido">
+            <div class="contenido">
+                <div class="container">
+                    <h4>MovieTrivia</h4>
+                    <div class="question">
+                        <p id="q"></p>
+                    </div>
+                <div class="answer">
+                    <input type="radio" id="radioFirst" name="multiple">
+                    <label for="radioFirst" class="btn btn1" id="first"></label>
+                    <input type="radio" id="radioSecond" name="multiple">
+                    <label for="radioSecond" class="btn btn2" id="second"></label>
+                    <input type="radio" id="radioThird" name="multiple">
+                    <label for="radioThird" class="btn btn3" id="third"></label>
+                    <input type="radio" id="radioFourth" name="multiple">
+                    <label for="radioFourth" class="btn btn4" id="fourth"></label>
+                    <button class="submit" id="send">Submit</button>
+                </div>
+                </div>
+            </div>
         </div>
-        <button id="send">Enviar</button>
-    </div>
+    </section>
     <script src="{{ url_for('static', filename='new_match.js')}}"></script>
+    <script src="{{ url_for('static', filename='play.js')}}"></script>
 </body>
 </html>
