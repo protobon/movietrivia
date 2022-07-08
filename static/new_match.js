@@ -7,7 +7,7 @@ async function fetch_question() {
         const question = await response.json();
         return (question);
     } catch (err) {
-        console.log(err);
+        alert(err);
     }
 }
 
@@ -78,29 +78,42 @@ const get_score = async () => {
         body: JSON.stringify(results)
     });
     const result = await response.json();
-    alert(result.score);
     return result;
 }
 
-
 document.querySelector('#send').addEventListener("click", () => {
     save_result();
-    if (count === 5) {
-        timer.stop();
-        finish_game();
-    } else {
-        display_question();
-        timer.reset();
-    }
+    display_question();
+    timer.reset();
 });
 
-const finish_game = () => {
-    get_score();
+const finish_game = async () => {
+    timer.stop();
+    const score = await get_score();
+    (async () => {
+        try {
+            const response = await fetch('http://localhost:5000/api/history/save', {
+                method: 'POST',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({"score": score.score})
+            });
+            const result = await response.json();
+            alert(result.success);
+        } catch (err) {
+            alert(err);
+        }
+    })();
 }
 
 var timer = new Timer(function() {
     document.querySelector('#send').click();
-}, 5000);
-
+}, 15000);
 
 document.querySelector('#send').click();
+
+setTimeout(() => {
+    finish_game();
+}, 10000);

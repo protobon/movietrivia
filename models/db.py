@@ -10,8 +10,11 @@ from sqlalchemy.sql.expression import func
 
 from models.user import User
 from models.question import Question
+from models.history import History
 
+from datetime import datetime
 import random
+from typing import Optional
 
 
 class DB:
@@ -105,3 +108,29 @@ class DB:
             if question.a.strip() == answer[0]:
                 score += 50
         return {"score": score}
+
+    def save_match(self, uid: int, username: str, score: int) -> bool:
+        """method to save a match played to history"""
+        try:
+            match = History(
+                uid=uid,
+                username=username,
+                score=score,
+                playedAt=datetime.now()
+            )
+            self._session.add(match)
+            self._session.commit()
+            return True
+        except Exception as e:
+            print(e)
+        return False
+
+    def get_history(self, user_id: Optional[int]) -> list:
+        """method to retrieve all matches played by user from user id"""
+        if user_id:
+            query = self._session.query(History).filter_by(uid=user_id)
+        else:
+            query = self._session.query(History)
+
+        history = query.all()
+        return [match.to_dict() for match in history]

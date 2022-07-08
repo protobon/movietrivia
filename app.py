@@ -69,5 +69,23 @@ def check_answers():
     return jsonify(score)
 
 
+@app.route("/api/history/save", methods=["POST"], strict_slashes=False)
+def save_match():
+    session_id = request.cookies.get("session_id")
+    user = AUTH.get_user_from_session_id(session_id)
+    if not user:
+        return jsonify({"authorized": False}), 401
+    score = request.get_json()["score"]
+    if db.save_match(uid=user.id, username=user.username, score=score):
+        return jsonify({"success": True})
+    return jsonify({"success": False})
+
+
+# @app.route("/api/history", strict_slashes=False)
+# def get_history():
+#     session_id = request.cookies.get("session_id")
+#     user = AUTH.get_user_from_session_id(session_id)
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
