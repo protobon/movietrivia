@@ -1,3 +1,5 @@
+document.querySelector("#triggerModal").style.visibility = 'hidden';
+
 async function fetch_question() {
     try {
         const response = await fetch('http://localhost:5000/api/fetch-question');
@@ -101,7 +103,9 @@ const finish_game = async () => {
                 body: JSON.stringify({"score": score.score})
             });
             const result = await response.json();
-            alert(result.success);
+            if (result.success == true) {
+                document.querySelector("#triggerModal").click();
+            }
         } catch (err) {
             alert(err);
         }
@@ -110,7 +114,7 @@ const finish_game = async () => {
 
 var timer = new Timer(function() {
     document.querySelector('#send').click();
-}, 15000);
+}, 10000);
 
 document.querySelector('#send').click();
 

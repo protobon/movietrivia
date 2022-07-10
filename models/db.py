@@ -107,6 +107,8 @@ class DB:
             question = self._session.query(Question).get(answer[1])
             if question.a.strip() == answer[0]:
                 score += 50
+            else:
+                score -= 10
         return {"score": score}
 
     def save_match(self, uid: int, username: str, score: int) -> bool:
