@@ -110,7 +110,8 @@ const finish_game = async () => {
             });
             const result = await response.json();
             if (result.success == true) {
-                document.querySelector("#modal-show-result").innerHTML(`Tu puntaje: ${score.score}`);
+                document.querySelector("#triggerModal").click();
+                document.querySelector("#modal-show-result").innerHTML = `Tu puntaje: ${score.score}`;
                 document.querySelector("#triggerModal").click();
             }
         } catch (err) {
