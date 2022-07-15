@@ -6,8 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='play.css') }}">
     <title>Movietrivia - Play</title>
+    <link href="https://fonts.googleapis.com/css2?family=Edu+NSW+ACT+Foundation:wght@500&family=Edu+VIC+WA+NT+Beginner:wght@600&display=swap" rel="stylesheet"> 
+    <link href="http://fonts.cdnfonts.com/css/games" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/barba.js/0.0.2/barba.js"></script>
 </head>
-<body>
+<body data-barba="wrapper">
+    <div class="load-container">
+        <div class="loading-screen"></dib>
+    </div>
+    <audio autoplay>
+        <source src="{{ url_for('static', filename='tema.mp3') }}" type="audio/mpeg">
+    </audio>
+
     <section class="contenedor-fondo-animado">
         <div class="animacion">
             <!--  -->
@@ -35,14 +46,14 @@
                     </div>
                 <div class="answer">
                     <input type="radio" id="radioFirst" name="multiple">
-                    <label for="radioFirst" class="btn btn1" id="first"></label>
+                    <label for="radioFirst" class="btn" id="first"></label>
                     <input type="radio" id="radioSecond" name="multiple">
-                    <label for="radioSecond" class="btn btn2" id="second"></label>
+                    <label for="radioSecond" class="btn" id="second"></label>
                     <input type="radio" id="radioThird" name="multiple">
-                    <label for="radioThird" class="btn btn3" id="third"></label>
+                    <label for="radioThird" class="btn" id="third"></label>
                     <input type="radio" id="radioFourth" name="multiple">
-                    <label for="radioFourth" class="btn btn4" id="fourth"></label>
-                    <button class="submit" id="send">Submit</button>
+                    <label for="radioFourth" class="btn" id="fourth"></label>
+                    <button class="submit" id="send" onclick="">Done!</button>
                 </div>
                 </div>
             </div>
@@ -50,5 +61,7 @@
     </section>
     <script src="{{ url_for('static', filename='new_match.js')}}"></script>
     <script src="{{ url_for('static', filename='play.js')}}"></script>
+    <script src="{{ url_for('static', filename='translates.js')}}"></script>
+</main>
 </body>
 </html>

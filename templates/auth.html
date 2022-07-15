@@ -7,8 +7,15 @@
     <title>Login-Movietrivia</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ url_for('static', filename='auth.css')}}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/barba.js/0.0.2/barba.js"></script>
+    <script src="{{ url_for('static', filename='translates.js')}}"></script>
 </head>
-<body>
+<body data-barba="wrapper">
+    <div class="load-container">
+        <div class="loading-screen"></div>
+    </div>
+    <main data-barba="container" data-barba-namespaces="home-section"></main>
     <section class="contenedor-fondo-animado">
         <div class="animacion">
             <!--  -->

@@ -11,7 +11,6 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 AUTH = Auth()
 db = DB()
 
-
 @app.route("/")
 def home():
     return render_template("index.html")
@@ -25,6 +24,10 @@ def play():
         if user:
             return render_template("play.html")
     return redirect("/auth")
+
+@app.route("/rules")
+def rules():
+    return render_template("rules.html")
 
 
 @app.route("/auth")
@@ -79,7 +82,6 @@ def save_match():
     if db.save_match(uid=user.id, username=user.username, score=score):
         return jsonify({"success": True})
     return jsonify({"success": False})
-
 
 # @app.route("/api/history", strict_slashes=False)
 # def get_history():
