@@ -289,3 +289,22 @@ body{
 label:hover{
     transform:rotate(5deg)
 }
+.modal{
+    background-color: #1e1f2183;    
+}
+.modal-header{
+    background-color: wheat;
+    font-family: 'Games', sans-serif;
+    color: white;
+}
+.text-center{
+    text-decoration: underline;
+}
+.progress-bar{
+    width: 350px;
+    height: 20px;
+    background-color: #eee;
+    border-radius: 10px;
+    align-content: center;
+    justify-content: center;
+}
