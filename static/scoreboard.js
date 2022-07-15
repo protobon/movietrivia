@@ -1,3 +1,5 @@
+import ('http://fonts.cdnfonts.com/css/games');
+
 async function get_scoreboard() {
     try {
         const response = await fetch('http://localhost:5000/api/scoreboard');
@@ -22,6 +24,13 @@ async function generate_table() {
     tblHead.appendChild(document.createElement("th")).
           appendChild(document.createTextNode("score"));
     tbl.appendChild(tblHead);
+    // Styles
+    tbl.style.width = '100%'
+    tbl.style.height = '100%'
+    tbl.style.color = '#8fbaf3'
+    tbl.style.textDecoration = 'underline black'
+    tbl.style.backgroundColor = 'white'
+    tbl.style.fontFamily ='Games';
 
     const history = await get_scoreboard();
     // creating all cells

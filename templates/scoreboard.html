@@ -1,12 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com"> 
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movietrivia - Scoreboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='scoreboard.css')}}">
 </head>
 <body>
+    <section class="contenedor-fondo-animado">
+        <div class="animacion">
+            <!--  -->
+            <span class="uno"></span>
+            <span class="dos"></span>
+            <span class="tres"></span>
+            <span class="cuatro"></span>
+            <!--  -->
+            <span class="uno"></span>
+            <span class="dos"></span>
+            <span class="tres"></span>
+            <span class="cuatro"></span>
+            <!--  -->
+            <span class="uno"></span>
+            <span class="dos"></span>
+            <span class="tres"></span>
+            <span class="cuatro"></span>
+        </div>
+        <div class="seccion-contenido">
+            <div class="contenido">
+                <h5> Tabla de Puntuaciones!</h5>
+            </div>
+        </div>
+    </section>
     <script src="{{ url_for('static', filename='scoreboard.js') }}"></script>
 </body>
 </html>
