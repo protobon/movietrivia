@@ -47,6 +47,40 @@ function Timer(fn, t) {
     }
 }
 
+
+function progressBar() {
+    const tmp = document.querySelector('#myBar');
+    if (tmp) {
+        tmp.remove();
+    }
+
+    var myProgress = document.createElement('div');
+    myProgress.setAttribute('id', 'myProgress');
+    myProgress.style.width = "100%";
+    myProgress.style.backgroundColor = 'grey';
+
+    var myBar = document.createElement('div');
+    myBar.setAttribute('id', 'myBar');
+    myBar.style.width = "0%";
+    myBar.style.height = "25px";
+    myBar.style.backgroundColor = 'green';
+
+    myProgress.appendChild(myBar);
+    document.querySelector('#bar-holder').appendChild(myProgress);
+    var width = 0.25;
+    myBar.style.width = width + "%";
+    var barId = setInterval(frame, 37.5);
+    function frame() {
+        if (width >= 100) {
+            clearInterval(barId);
+            return;
+        }
+        width += 0.25;
+        myBar.style.width = width + "%";
+    }
+}
+
+
 // Render question and multiple choice answer
 const labels = ['#first', '#second', '#third', '#fourth'];
 var question;
@@ -65,6 +99,7 @@ const display_question = async ()  => {
         radioAnswers[i].value = answers[i];
         document.querySelector(labels[i]).innerHTML = answers[i];
     }
+    progressBar();
 }
 
 // Save each question result in Array to calculate at the end.
@@ -125,10 +160,10 @@ const finish_game = async () => {
 
 var timer = new Timer(function() {
     document.querySelector('#send').click();
-}, 10000);
+}, 15000);
 
 document.querySelector('#send').click();
 
 setTimeout(() => {
     finish_game();
-}, 30000);
+}, 60000);

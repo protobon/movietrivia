@@ -48,7 +48,7 @@ async function generate_table() {
     // put the <tbody> in the <table>
     tbl.appendChild(tblBody);
     // appends <table> into <body>
-    document.body.appendChild(tbl);
+    document.querySelector('div.contenido').appendChild(tbl);
     // sets the border attribute of tbl to '2'
     tbl.setAttribute("border", "2");
 }
