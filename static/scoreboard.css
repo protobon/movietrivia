@@ -1,4 +1,4 @@
-
+@import url('http://fonts.cdnfonts.com/css/games');
 .contenedor-fondo-animado {
     display: block;
     height: 100vh;
@@ -15,18 +15,15 @@
     justify-content: center;
 }
 .seccion-contenido .contenido {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 80%;
     max-width: 800px;
     text-align: center;
     z-index: 5;
+    width: 100vh;
+    height: 100vh;
 }
-.seccion-contenido .contenido h4 {
-    font-size: 5rem;
+.seccion-contenido .contenido h5 {
+    font-size: 2rem;
     font-family: 'Games', sans-serif;
-    margin-bottom: 2.5rem;
 }
 .seccion-contenido .contenido p {
     font-style: italic;
