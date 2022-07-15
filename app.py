@@ -32,6 +32,11 @@ def auth():
     return render_template("auth.html")
 
 
+@app.route("/scoreboard")
+def scoreboard():
+    return render_template("scoreboard.html")
+
+
 @app.route("/api/auth", methods=["POST"], strict_slashes=False)
 def user_auth():
     """Users endpoint"""
@@ -81,10 +86,11 @@ def save_match():
     return jsonify({"success": False})
 
 
-# @app.route("/api/history", strict_slashes=False)
-# def get_history():
-#     session_id = request.cookies.get("session_id")
-#     user = AUTH.get_user_from_session_id(session_id)
+@app.route("/api/scoreboard", strict_slashes=False)
+def api_scoreboard():
+    matches = db.scoreboard()
+    matches = sorted(matches, key=lambda d: d['score'], reverse=True)
+    return jsonify(matches)
 
 
 if __name__ == "__main__":

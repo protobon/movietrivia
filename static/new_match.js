@@ -1,4 +1,10 @@
 document.querySelector("#triggerModal").style.visibility = 'hidden';
+document.querySelector("#play-again").addEventListener("click", () => {
+    window.location.reload();
+});
+document.querySelector("#home").addEventListener("click", () => {
+    window.location.href = "http://localhost:5000/";
+});
 
 async function fetch_question() {
     try {
@@ -104,6 +110,7 @@ const finish_game = async () => {
             });
             const result = await response.json();
             if (result.success == true) {
+                document.querySelector("#modal-show-result").innerHTML(`Tu puntaje: ${score.score}`);
                 document.querySelector("#triggerModal").click();
             }
         } catch (err) {
