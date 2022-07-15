@@ -107,6 +107,8 @@ class DB:
             question = self._session.query(Question).get(answer[1])
             if question.a.strip() == answer[0]:
                 score += 50
+            else:
+                score -= 10
         return {"score": score}
 
     def save_match(self, uid: int, username: str, score: int) -> bool:
@@ -125,12 +127,9 @@ class DB:
             print(e)
         return False
 
-    def get_history(self, user_id: Optional[int]) -> list:
+    def scoreboard(self) -> list:
         """method to retrieve all matches played by user from user id"""
-        if user_id:
-            query = self._session.query(History).filter_by(uid=user_id)
-        else:
-            query = self._session.query(History)
+        query = self._session.query(History)
 
         history = query.all()
         return [match.to_dict() for match in history]
