@@ -1,5 +1,3 @@
-import ('http://fonts.cdnfonts.com/css/games');
-
 async function get_scoreboard() {
     try {
         const response = await fetch('http://localhost:5000/api/scoreboard');
@@ -25,12 +23,11 @@ async function generate_table() {
           appendChild(document.createTextNode("score"));
     tbl.appendChild(tblHead);
     // Styles
-    tbl.style.width = '100%'
-    tbl.style.height = '100%'
-    tbl.style.color = '#8fbaf3'
-    tbl.style.textDecoration = 'underline black'
-    tbl.style.backgroundColor = 'white'
-    tbl.style.fontFamily ='Games';
+    tbl.style.width = '100%';
+    tbl.style.height = '100%';
+    tbl.style.color = '#000';
+    tbl.style.backgroundColor = 'white';
+    tbl.style.fontFamily ='Poppins';
 
     const history = await get_scoreboard();
     // creating all cells
@@ -58,8 +55,6 @@ async function generate_table() {
     tbl.appendChild(tblBody);
     // appends <table> into <body>
     document.querySelector('div.contenido').appendChild(tbl);
-    // sets the border attribute of tbl to '2'
-    tbl.setAttribute("border", "2");
 }
 
 generate_table();
