@@ -54,6 +54,9 @@ var count = 0;
 var radioAnswers = document.getElementsByName('multiple');
 
 const display_question = async ()  => {
+    for (const rb of radioAnswers) {
+        rb.checked = false;
+    }
     const q = document.querySelector('#q');
     question = await fetch_question();
     q.innerHTML = `${question.q}`;
@@ -128,4 +131,4 @@ document.querySelector('#send').click();
 
 setTimeout(() => {
     finish_game();
-}, 10000);
+}, 30000);

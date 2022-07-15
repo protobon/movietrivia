@@ -109,7 +109,7 @@ class DB:
                 score += 50
             else:
                 score -= 10
-        return {"score": score}
+        return {"score": score if score > 0 else 0}
 
     def save_match(self, uid: int, username: str, score: int) -> bool:
         """method to save a match played to history"""
