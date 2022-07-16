@@ -181,3 +181,7 @@ html {
 th, td {
     border-bottom: 1px solid #ddd;
 }
+.btn{
+    width: 50px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
