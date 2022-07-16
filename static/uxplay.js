@@ -1,4 +1,4 @@
-const button = document.getElementById('send');
+const button = document.getElementById('submit');
 const fondoanime = document.querySelector(".contenedor-fondo-animado")
 const generateRandomcolor = () => {
     const r = Math.floor(Math.random() * 256);
