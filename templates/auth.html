@@ -74,6 +74,12 @@
             console.log(err);
         }
     }
+    var submit = document.querySelector('#password');
+    submit.addEventListener("keypress", (event) => {
+        if (event.key == "Enter") {
+            sendCredentials();
+        }
+    });
 </script>
 </body>
 </html>

@@ -1,14 +1,45 @@
+// Utils
+function getRandomInt(max) {
+    return Math.floor(1 + Math.random() * max);
+}
+
+// For Modal
 document.querySelector("#triggerModal").style.visibility = 'hidden';
 document.querySelector("#play-again").addEventListener("click", () => {
     window.location.reload();
 });
 document.querySelector("#home").addEventListener("click", () => {
-    window.location.href = "http://localhost:5000/";
+    window.location.href = "http://localhost:5000/home";
+});
+document.querySelector("#scoreboard").addEventListener("click", () => {
+    window.location.href = "http://localhost:5000/scoreboard";
+});
+document.querySelector("#logout").addEventListener("click", () => {
+    window.location.href = "http://localhost:5000/logout";
 });
 
+
+// Se guarda id de pregunta para no repetir la misma
+queries = [];
+
+// Fetch one question from api
 async function fetch_question() {
     try {
-        const response = await fetch('http://localhost:5000/api/fetch-question');
+        const id = getRandomInt(5);
+        while (true) {
+            if (queries.includes(id)) {
+                id = getRandomInt(5);
+            } else {
+                break;
+            }
+        }
+        const response = await fetch('http://localhost:5000/api/fetch-question', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({'questionId': id})
+        });
         if (!response.ok) {
             throw new Error(`Error! status: ${response.status}`);
         }
@@ -19,7 +50,7 @@ async function fetch_question() {
     }
 }
 
-
+// Timer for each question
 function Timer(fn, t) {
     var timerObj = setInterval(fn, t);
 
@@ -47,7 +78,7 @@ function Timer(fn, t) {
     }
 }
 
-
+// Progress Bar
 function progressBar() {
     const tmp = document.querySelector('#myBar');
     if (tmp) {
@@ -69,7 +100,7 @@ function progressBar() {
     document.querySelector('#bar-holder').appendChild(myProgress);
     var width = 0.25;
     myBar.style.width = width + "%";
-    var barId = setInterval(frame, 37.5);
+    var barId = setInterval(frame, 30);
     function frame() {
         if (width >= 100) {
             clearInterval(barId);
@@ -127,12 +158,14 @@ const get_score = async () => {
     return result;
 }
 
-document.querySelector('#send').addEventListener("click", () => {
+// Funcionalidad del botón 'enviar'
+document.querySelector('#submit').addEventListener("click", () => {
     save_result();
     display_question();
     timer.reset();
 });
 
+// Funcionalidad al final del juego
 const finish_game = async () => {
     timer.stop();
     const score = await get_score();
@@ -158,12 +191,14 @@ const finish_game = async () => {
     })();
 }
 
+// Activar loop de Questions, 15s
 var timer = new Timer(function() {
-    document.querySelector('#send').click();
-}, 15000);
+    document.querySelector('#submit').click();
+}, 12000); //ms
 
-document.querySelector('#send').click();
+// Traer primera pregunta haciendo click
+document.querySelector('#submit').click();
 
 setTimeout(() => {
     finish_game();
-}, 60000);
+}, 45000);

@@ -90,12 +90,11 @@ class DB:
         except Exception as e:
             print(e)
 
-    def fetch_question(self) -> list:
+    def fetch_question(self, question_id: int) -> list:
         """method to retrieve random question
         for using in a trivia match"""
-        query = self._session.query(Question)\
-                    .order_by(func.rand()).limit(1)
-        question = query.one().to_dict()
+        question = self._session.query(Question).get(question_id)
+        question = question.to_dict()
         question['opt'] = [op.strip() for op in question['opt'].split(',')]
         random.shuffle(question['opt'])
         return question
@@ -128,7 +127,7 @@ class DB:
         return False
 
     def scoreboard(self) -> list:
-        """method to retrieve all matches played by user from user id"""
+        """method to retrieve history of matches all time"""
         query = self._session.query(History)
 
         history = query.all()

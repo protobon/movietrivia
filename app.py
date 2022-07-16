@@ -12,7 +12,7 @@ AUTH = Auth()
 db = DB()
 
 
-@app.route("/")
+@app.route("/home")
 def home():
     return render_template("index.html")
 
@@ -35,6 +35,15 @@ def auth():
 @app.route("/scoreboard")
 def scoreboard():
     return render_template("scoreboard.html")
+
+
+@app.route("/logout")
+def logout():
+    session_id = request.cookies.get('session_id')
+    if session_id:
+        user = AUTH.get_user_from_session_id(session_id=session_id)
+        AUTH.destroy_session(user.id)
+    return redirect("/home")
 
 
 @app.route("/api/auth", methods=["POST"], strict_slashes=False)
@@ -60,10 +69,11 @@ def user_auth():
         return jsonify({"error": "wrong credentials"}), 401
 
 
-@app.route("/api/fetch-question", methods=["GET"], strict_slashes=False)
+@app.route("/api/fetch-question", methods=["POST"], strict_slashes=False)
 def get_question():
     """Sends a question object in json format"""
-    return jsonify(db.fetch_question())
+    question_id = request.get_json()["questionId"]
+    return jsonify(db.fetch_question(question_id=question_id))
 
 
 @app.route("/api/calculate-score", methods=["POST"], strict_slashes=False)
