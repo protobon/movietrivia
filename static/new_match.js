@@ -161,12 +161,38 @@ const get_score = async () => {
     return result;
 }
 
-// Funcionalidad del botón 'enviar'
-document.querySelector('#submit').addEventListener("click", () => {
-    save_result();
-    display_question();
-    timer.reset();
-});
+// Background Styles Change Color
+const fondoanime = document.querySelector(".contenedor-fondo-animado");
+const generateRandomcolor = () => {
+    const r = Math.floor(Math.random() * 256);
+    const g = Math.floor(Math.random() * 256);
+    const b = Math.floor(Math.random() * 256);
+
+    const rgbColor = `rgb(${r},${g},${b})`;
+    return rgbColor;
+};
+
+const setBackground = () => {
+    const newColor = generateRandomcolor();
+    fondoanime.style.background = newColor;
+}
+
+// Funcionalidad click on respuesta
+for (const radio of radioAnswers) {
+    radio.onclick = (e) => {
+        save_result();
+        display_question();
+        timer.reset();
+        setBackground();
+    }
+}
+
+// // Funcionalidad del botón 'enviar'
+// document.querySelector('#submit').addEventListener("click", () => {
+//     save_result();
+//     display_question();
+//     timer.reset();
+// });
 
 // Funcionalidad al final del juego
 const finish_game = async () => {
@@ -194,13 +220,15 @@ const finish_game = async () => {
     })();
 }
 
-// Activar loop de Questions, 15s
+// Activar loop de Questions, 12s
 var timer = new Timer(function() {
-    document.querySelector('#submit').click();
+    display_question();
 }, 12000); //ms
 
 // Traer primera pregunta haciendo click
-document.querySelector('#submit').click();
+// document.querySelector('#submit').click();
+
+display_question();
 
 setTimeout(() => {
     finish_game();
