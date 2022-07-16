@@ -3,8 +3,8 @@ function getRandomInt(max) {
     return Math.floor(1 + Math.random() * max);
 }
 
-// For Modal
-document.querySelector("#triggerModal").style.visibility = 'hidden';
+// Modal elements
+document.querySelector("#triggerModal").style.display = 'none';
 document.querySelector("#play-again").addEventListener("click", () => {
     window.location.reload();
 });
