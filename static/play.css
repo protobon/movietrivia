@@ -300,11 +300,39 @@ label:hover{
 .text-center{
     text-decoration: underline;
 }
-.mdc-button__icon {
-    display: inline-flex;
-    width: 16px;
-    height: 16px;
+  .button {
+    display: flex;
+    height: 50px;
+    padding: 0;
+    background: wheat;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    overflow: hidden;
+    font-family: "Quicksand", sans-serif;
     font-size: 16px;
-    vertical-align: middle;
-    margin-right: 8px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  
+  .button:hover {
+    background: rgb(214, 187, 135);
+  }
+  
+  .button:active {
+    background: rgb(171, 164, 151);
+  }
+  
+  .button__text,
+  .button__icon {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 8px;
+    color: rgb(255, 255, 255);
+    height: 100%;
+  }
+  
+  .button__icon {
+    font-size: 1.5em;
+    background: rgba(0, 0, 0, 0.04);
   }

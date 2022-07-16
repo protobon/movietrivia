@@ -40,7 +40,7 @@
                 </div>
                 <div class="mb-3 form-check">
                 </div>
-                <button onclick="sendCredentials()" class="btn btn-primary botonsito">Login</button>
+                <button onclick="sendCredentials()" class="btn btn-primary botonsito" id="logineado">Login</button>
             </div>
         </div>
     </section>
@@ -80,6 +80,14 @@
             sendCredentials();
         }
     });
+
+$(document).ready(function(){
+$('#password').keypress(function(e){
+    if(e.keyCode==13)
+      $('#loguineado').click();
+    });
+});
+
 </script>
 </body>
 </html>
