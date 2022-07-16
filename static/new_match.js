@@ -88,14 +88,17 @@ function progressBar() {
     var myProgress = document.createElement('div');
     myProgress.setAttribute('id', 'myProgress');
     myProgress.style.width = "100%";
-    myProgress.style.backgroundColor = 'grey';
+    myProgress.style.backgroundColor = 'white';
+    myProgress.style.borderRadius = '10px 10px'
+    myProgress.style.marginBottom = '10px'
 
     var myBar = document.createElement('div');
     myBar.setAttribute('id', 'myBar');
     myBar.style.width = "0%";
     myBar.style.height = "25px";
-    myBar.style.backgroundColor = 'green';
-
+    myBar.style.backgroundColor = '#cbcbcb';
+    myBar.style.borderRadius = '10px 10px';
+    myBar.style.marginBottom = '10px';
     myProgress.appendChild(myBar);
     document.querySelector('#bar-holder').appendChild(myProgress);
     var width = 0.25;
