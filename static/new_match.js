@@ -220,15 +220,17 @@ const finish_game = async () => {
     })();
 }
 
-// Activar loop de Questions, 12s
-var timer = new Timer(function() {
-    display_question();
-}, 12000); //ms
 
 // Traer primera pregunta haciendo click
 // document.querySelector('#submit').click();
 
-display_question();
+setTimeout(() => {
+    display_question();
+    // Activar loop de Questions, 12s
+    var timer = new Timer(function() {
+        display_question();
+    }, 12000); //ms
+}, 5000);
 
 setTimeout(() => {
     finish_game();
