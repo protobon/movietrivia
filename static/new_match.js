@@ -19,7 +19,7 @@ document.querySelector("#logout").addEventListener("click", () => {
 });
 
 
-// Se guarda id de pregunta para no repetir la misma
+// TO-DO Se guarda id de pregunta para no repetir la misma
 queries = [];
 
 // Fetch one question from api

@@ -1,3 +1,9 @@
+// Buttons
+var homeButton = document.querySelector('#home');
+homeButton.addEventListener('click', () => {
+    window.location.href = "http://localhost:5000/home";
+});
+
 async function get_scoreboard() {
     try {
         const response = await fetch('http://localhost:5000/api/scoreboard');

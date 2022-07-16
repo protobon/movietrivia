@@ -3,7 +3,7 @@
 
 from models.auth import Auth
 from models.db import DB
-from flask import Flask, jsonify, request, abort, redirect, render_template
+from flask import Flask, jsonify, request, redirect, render_template
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -64,7 +64,6 @@ def user_auth():
             session_id = AUTH.create_session(username)
             res = jsonify({"username": username, "message": "logged in"})
             res.set_cookie("session_id", session_id)
-            print(res)
             return res
         return jsonify({"error": "wrong credentials"}), 401
 
