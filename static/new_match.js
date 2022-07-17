@@ -19,17 +19,18 @@ document.querySelector("#logout").addEventListener("click", () => {
 });
 
 
-// TO-DO Se guarda id de pregunta para no repetir la misma
-queries = [];
+// Se guarda id de pregunta para no repetir la misma
+var queries = [];
 
 // Fetch one question from api
 async function fetch_question() {
     try {
-        const id = getRandomInt(5);
+        var id = getRandomInt(36);
         while (true) {
             if (queries.includes(id)) {
-                id = getRandomInt(5);
+                id = getRandomInt(36);
             } else {
+                queries.push(id);
                 break;
             }
         }
@@ -179,20 +180,13 @@ const setBackground = () => {
 
 // Funcionalidad click on respuesta
 for (const radio of radioAnswers) {
-    radio.onclick = (e) => {
+    radio.onclick = () => {
         save_result();
         display_question();
         timer.reset();
         setBackground();
     }
 }
-
-// // Funcionalidad del botón 'enviar'
-// document.querySelector('#submit').addEventListener("click", () => {
-//     save_result();
-//     display_question();
-//     timer.reset();
-// });
 
 // Funcionalidad al final del juego
 const finish_game = async () => {
@@ -210,9 +204,14 @@ const finish_game = async () => {
             });
             const result = await response.json();
             if (result.success == true) {
+                document.querySelector("#modal-show-result").
+                    innerHTML = `Tu puntaje: ${score.score}`;
                 document.querySelector("#triggerModal").click();
-                document.querySelector("#modal-show-result").innerHTML = `Tu puntaje: ${score.score}`;
-                document.querySelector("#triggerModal").click();
+                // const stats = {
+                //     "questions": queries,
+                //     "answers": results,
+                //     "results": score.stats
+                // }
             }
         } catch (err) {
             alert(err);
@@ -221,16 +220,16 @@ const finish_game = async () => {
 }
 
 
-// Traer primera pregunta haciendo click
-// document.querySelector('#submit').click();
+var timer;
 
 setTimeout(() => {
     display_question();
     // Activar loop de Questions, 12s
-    var timer = new Timer(function() {
+    timer = new Timer(function() {
         display_question();
     }, 12000); //ms
 }, 5000);
+
 
 setTimeout(() => {
     finish_game();

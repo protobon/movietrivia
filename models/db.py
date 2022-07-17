@@ -73,7 +73,7 @@ class DB:
         self._session.commit()
         return None
 
-    def insert_data(self, filename: str) -> Question:
+    def insert_data(self, filename: str) -> bool:
         try:
             with open(filename, 'r') as f:
                 for line in f.readlines()[:-1]:
@@ -86,15 +86,17 @@ class DB:
                     )
                     self._session.add(new_question)
                 self._session.commit()
-                return new_question
+                return True
         except Exception as e:
             print(e)
+        return False
 
     def fetch_question(self, question_id: int) -> list:
         """method to retrieve random question
         for using in a trivia match"""
         question = self._session.query(Question).get(question_id)
         question = question.to_dict()
+        del question["a"]
         question['opt'] = [op.strip() for op in question['opt'].split(',')]
         random.shuffle(question['opt'])
         return question
@@ -102,13 +104,19 @@ class DB:
     def get_match_score(self, answers: list) -> dict:
         """method to get the total score of one played match"""
         score: int = 0
+        stats = []
         for answer in answers:
             question = self._session.query(Question).get(answer[1])
             if question.a.strip() == answer[0]:
                 score += 50
+                stats.append(True)
             else:
                 score -= 10
-        return {"score": score if score > 0 else 0}
+                stats.append(False)
+        return {
+            "score": score if score > 0 else 0,
+            "stats": stats
+        }
 
     def save_match(self, uid: int, username: str, score: int) -> bool:
         """method to save a match played to history"""
