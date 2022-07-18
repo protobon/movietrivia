@@ -3,8 +3,8 @@ function getRandomInt(max) {
     return Math.floor(1 + Math.random() * max);
 }
 
-// For Modal
-document.querySelector("#triggerModal").style.visibility = 'hidden';
+// Modal elements
+document.querySelector("#triggerModal").style.display = 'none';
 document.querySelector("#play-again").addEventListener("click", () => {
     window.location.reload();
 });
@@ -19,17 +19,18 @@ document.querySelector("#logout").addEventListener("click", () => {
 });
 
 
-// TO-DO Se guarda id de pregunta para no repetir la misma
-queries = [];
+// Se guarda id de pregunta para no repetir la misma
+var queries = [];
 
 // Fetch one question from api
 async function fetch_question() {
     try {
-        const id = getRandomInt(5);
+        var id = getRandomInt(36);
         while (true) {
             if (queries.includes(id)) {
-                id = getRandomInt(5);
+                id = getRandomInt(36);
             } else {
+                queries.push(id);
                 break;
             }
         }
@@ -161,12 +162,31 @@ const get_score = async () => {
     return result;
 }
 
-// Funcionalidad del botón 'enviar'
-document.querySelector('#submit').addEventListener("click", () => {
-    save_result();
-    display_question();
-    timer.reset();
-});
+// Background Styles Change Color
+const fondoanime = document.querySelector(".contenedor-fondo-animado");
+const generateRandomcolor = () => {
+    const r = Math.floor(Math.random() * 256);
+    const g = Math.floor(Math.random() * 256);
+    const b = Math.floor(Math.random() * 256);
+
+    const rgbColor = `rgb(${r},${g},${b})`;
+    return rgbColor;
+};
+
+const setBackground = () => {
+    const newColor = generateRandomcolor();
+    fondoanime.style.background = newColor;
+}
+
+// Funcionalidad click on respuesta
+for (const radio of radioAnswers) {
+    radio.onclick = () => {
+        save_result();
+        display_question();
+        timer.reset();
+        setBackground();
+    }
+}
 
 // Funcionalidad al final del juego
 const finish_game = async () => {
@@ -184,9 +204,14 @@ const finish_game = async () => {
             });
             const result = await response.json();
             if (result.success == true) {
+                document.querySelector("#modal-show-result").
+                    innerHTML = `Tu puntaje: ${score.score}`;
                 document.querySelector("#triggerModal").click();
-                document.querySelector("#modal-show-result").innerHTML = `Tu puntaje: ${score.score}`;
-                document.querySelector("#triggerModal").click();
+                // const stats = {
+                //     "questions": queries,
+                //     "answers": results,
+                //     "results": score.stats
+                // }
             }
         } catch (err) {
             alert(err);
@@ -194,13 +219,17 @@ const finish_game = async () => {
     })();
 }
 
-// Activar loop de Questions, 15s
-var timer = new Timer(function() {
-    document.querySelector('#submit').click();
-}, 12000); //ms
 
-// Traer primera pregunta haciendo click
-document.querySelector('#submit').click();
+var timer;
+
+setTimeout(() => {
+    display_question();
+    // Activar loop de Questions, 12s
+    timer = new Timer(function() {
+        display_question();
+    }, 12000); //ms
+}, 5000);
+
 
 setTimeout(() => {
     finish_game();
