@@ -1,6 +1,6 @@
 version: "3.3"
 services:
-  web:
+  movietrivia:
     build: .
     restart: always
     ports:
@@ -16,5 +16,24 @@ services:
     networks:
       - flask_network
 
+  database:
+    image: mysql
+    command: --lower_case_table_names=0
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_DATABASE=movietrivia
+      - MYSQL_USER=ayrton
+      - MYSQL_PASSWORD=aaa
+      - MYSQL_TCP_PORT=3306
+    networks:
+      - flask_network
+    volumes:
+      - mysql_data:/var/lib/mysql
+
 networks:
   flask_network:
+
+volumes:
+  mysql_data:
