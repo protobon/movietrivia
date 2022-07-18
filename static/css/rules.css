@@ -62,6 +62,7 @@
 }
 .seccion-contenido .contenido li:nth-child(1) a {
     border: 3px solid #ffffff;
+    margin: 40px;
 }
 .seccion-contenido .contenido li:nth-child(2) a {
     border: 3px solid #90BAFF;
@@ -195,4 +196,9 @@ html {
 body {
     color: #404040;
     font-family: "Arial", Segoe UI, Tahoma, sans-serifl, Helvetica Neue, Helvetica;
+}
+.seccion-contenido .contenido p{
+    left: 0;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 20px;
 }
