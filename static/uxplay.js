@@ -14,5 +14,7 @@ const setBackground = () => {
     fondoanime.style.background = newColor;
 }
 
+const preloader = document.querySelector(".preloader");
+
 
 button.addEventListener("click", setBackground);
