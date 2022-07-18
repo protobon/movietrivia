@@ -1,12 +1,10 @@
 """DB module
 """
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
 from sqlalchemy.exc import InvalidRequestError
 from sqlalchemy.exc import NoResultFound
-from sqlalchemy.sql.expression import func
 
 from models.user import User
 from models.question import Question
@@ -14,7 +12,6 @@ from models.history import History
 
 from datetime import datetime
 import random
-from typing import Optional
 
 
 class DB:
@@ -24,9 +21,10 @@ class DB:
     def __init__(self) -> None:
         """Initialize a new DB instance
         """
-        self._engine = create_engine("mysql+pymysql://ayrton:aaa@localhost/movietrivia?charset=utf8mb4", echo=False)
-        # Base.metadata.drop_all(self._engine)
-        # Base.metadata.create_all(self._engine)
+        self._engine = create_engine("mysql+pymysql://ayrton:aaa@database:3306/movietrivia?charset=utf8mb4", echo=False)
+        User.metadata.create_all(self._engine)
+        Question.metadata.create_all(self._engine)
+        History.metadata.create_all(self._engine)
         self.__session = None
 
     @property
