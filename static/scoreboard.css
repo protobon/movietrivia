@@ -181,7 +181,10 @@ html {
 th, td {
     border-bottom: 1px solid #ddd;
 }
-.btn{
-    width: 50px;
+
+#home {
+    width: 100px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    padding: 0;
+    margin: 10px;
 }

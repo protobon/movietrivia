@@ -23,17 +23,27 @@ async function generate_table() {
     tbl.classList.add("scoreboard");
     const tblBody = document.createElement("tbody");
     const tblHead = document.createElement("thead");
-    tblHead.appendChild(document.createElement("th")).
-          appendChild(document.createTextNode("username"));
-    tblHead.appendChild(document.createElement("th")).
+    const username = document.createElement("th");
+    const score = document.createElement("th");
+    tblHead.appendChild(username).
+        appendChild(document.createTextNode("username"));
+    tblHead.appendChild(score).
           appendChild(document.createTextNode("score"));
     tbl.appendChild(tblHead);
     // Styles
+    tbl.style.display = 'block';
+    tbl.style.overflow = 'auto';
     tbl.style.width = '100%';
-    tbl.style.height = '100%';
+    tbl.style.height = '85%';
     tbl.style.color = '#000';
     tbl.style.backgroundColor = 'white';
     tbl.style.fontFamily ='Poppins';
+    tblBody.style.minHeight = '95%';
+    tblBody.style.overflow = 'auto';
+    tblBody.style.width = '100%';
+    tblHead.style.width = '100%';
+    username.style.width = '100%';
+    score.style.width = '100%';
 
     const history = await get_scoreboard();
     // creating all cells

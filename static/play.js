@@ -224,11 +224,12 @@ var timer;
 
 setTimeout(() => {
     display_question();
+    document.querySelector('div.preloader').style.display = 'none';
     // Activar loop de Questions, 12s
     timer = new Timer(function() {
         display_question();
     }, 12000); //ms
-}, 5000);
+}, 3000);
 
 
 setTimeout(() => {

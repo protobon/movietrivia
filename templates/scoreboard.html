@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movietrivia - Scoreboard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='scoreboard.css')}}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <style>@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');</style>
     <script type="module" src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule="" src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.js"></script>
@@ -32,14 +33,13 @@
         </div>
         <div class="seccion-contenido">
             <div class="contenido">
-                <button class="btn btn-primary" id="home"><ion-icon name="home-outline"></ion-icon>
-                    Home
+                <button class="btn btn-light" id="home"><ion-icon src="{{ url_for('static', filename='images/home-outline.svg') }}"></ion-icon>
+                Home
                 </button>
                 <h5> Tabla de Puntuaciones!</h5>
             </div>
         </div>
     </section>
-    <!-- <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script> -->
     <script src="{{ url_for('static', filename='scoreboard.js') }}"></script>
 </body>
 </html>

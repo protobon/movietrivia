@@ -275,10 +275,6 @@ body{
     border-color: rgb(127, 220, 236);
 }
 
-.answer input[type="radio"]:focus + label {
-    border: 2px dashed rgb(10, 160, 197);
-}
-
 .answer label:hover {
     background-color: rgb(157, 229, 241);
 }
@@ -345,7 +341,6 @@ label:hover{
   .preloader{
     color: white;
     width: 100%;
-    display: 0;
     height: 100%;
     background: #b2c2f8;
     left: 0;
