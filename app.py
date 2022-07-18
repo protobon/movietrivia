@@ -16,9 +16,11 @@ db = DB()
 def home():
     return render_template("index.html")
 
+
 @app.route("/")
 def rules():
     return render_template("rules.html")
+
 
 @app.route("/play")
 def play():
