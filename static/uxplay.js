@@ -13,6 +13,8 @@
 //     fondoanime.style.background = newColor;
 // }
 
+const preloader = document.querySelector(".preloader");
+
 
 // const uxradioAnswers = document.getElementsByName('multiple');
 // for (const radio of uxradioAnswers) {
