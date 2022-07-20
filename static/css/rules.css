@@ -23,6 +23,8 @@
 }
 .seccion-contenido .contenido {
     display: block;
+    overflow: auto;
+    padding: 20px;
     width: 80%;
     text-align: center;
     z-index: 5;

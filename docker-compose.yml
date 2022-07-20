@@ -4,7 +4,7 @@ services:
     build: .
     restart: always
     ports:
-      - 5000:5000
+      - "5000:5000"
     networks:
       - flask_network
 
@@ -12,7 +12,7 @@ services:
     build: proxy
     restart: always
     ports:
-      - 8000:80
+      - "80:80"
     networks:
       - flask_network
 
@@ -21,7 +21,7 @@ services:
     command: --lower_case_table_names=0
     restart: always
     ports:
-      - 3306:3306
+      - "3306:3306"
     environment:
       - MYSQL_DATABASE=movietrivia
       - MYSQL_USER=ayrton
