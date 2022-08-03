@@ -47,7 +47,8 @@ def logout():
     session_id = request.cookies.get('session_id')
     if session_id:
         user = AUTH.get_user_from_session_id(session_id=session_id)
-        AUTH.destroy_session(user.id)
+        if user:
+            AUTH.destroy_session(user.id)
     return redirect("/home")
 
 
@@ -67,10 +68,11 @@ def user_auth():
         if AUTH.valid_login(username, password):
             print('VALID CREDENTIALS')
             session_id = AUTH.create_session(username)
+            print(session_id)
             res = jsonify({"username": username, "message": "logged in"})
             res.set_cookie("session_id", session_id)
             return res
-        return jsonify({"error": "wrong credentials"}), 401
+    return jsonify({"error": "wrong credentials"}), 401
 
 
 @app.route("/api/fetch-question", methods=["POST"], strict_slashes=False)

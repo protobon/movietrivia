@@ -3,43 +3,43 @@ function getRandomInt(max) {
     return Math.floor(1 + Math.random() * max);
 }
 
-// Modal elements
-document.querySelector("#triggerModal").style.display = 'none';
-document.querySelector("#play-again").addEventListener("click", () => {
-    window.location.reload();
-});
-document.querySelector("#home").addEventListener("click", () => {
-    window.location.href = "http://localhost:5000/home";
-});
-document.querySelector("#scoreboard").addEventListener("click", () => {
-    window.location.href = "http://localhost:5000/scoreboard";
-});
-document.querySelector("#logout").addEventListener("click", () => {
-    window.location.href = "http://localhost:5000/logout";
-});
+// All questions (id)
+const orderQuestions = [...Array(66).keys()]
 
+// function to shuffle the array of questions (id)
+function shuffle(array) {
+    var i = array.length,
+        j = 0,
+        temp;
 
-// Se guarda id de pregunta para no repetir la misma
-var queries = [];
+    while (i--) {
+
+        j = Math.floor(Math.random() * (i+1));
+
+        // swap randomly chosen element with current element
+        temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+
+    }
+
+    return array;
+}
+
+// All questions (id) in random order
+var randQuestions = shuffle(orderQuestions);
+
 
 // Fetch one question from api
 async function fetch_question() {
     try {
-        var id = getRandomInt(36);
-        while (true) {
-            if (queries.includes(id)) {
-                id = getRandomInt(36);
-            } else {
-                queries.push(id);
-                break;
-            }
-        }
+        var questionId = randQuestions.pop();
         const response = await fetch('http://localhost:5000/api/fetch-question', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({'questionId': id})
+            body: JSON.stringify({'questionId': questionId})
         });
         if (!response.ok) {
             throw new Error(`Error! status: ${response.status}`);
@@ -50,6 +50,34 @@ async function fetch_question() {
         alert(err);
     }
 }
+
+
+// Save each question result in Array to calculate at the end.
+var results = [];
+
+const save_result = () => {
+    for (let i = 0; i < radioAnswers.length; i++) {
+        if (radioAnswers[i].checked) {
+            results.push([radioAnswers[i].value, question.id]);
+            count++;
+        }
+    }
+}
+
+
+// Fetch score from the game just played
+const get_score = async () => {
+    const response = await fetch('http://localhost:5000/api/calculate-score', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(results)
+    });
+    const result = await response.json();
+    return result;
+}
+
 
 // Timer for each question
 function Timer(fn, t) {
@@ -79,6 +107,7 @@ function Timer(fn, t) {
     }
 }
 
+
 // Progress Bar
 function progressBar() {
     const tmp = document.querySelector('#myBar');
@@ -104,7 +133,7 @@ function progressBar() {
     document.querySelector('#bar-holder').appendChild(myProgress);
     var width = 0.25;
     myBar.style.width = width + "%";
-    var barId = setInterval(frame, 30);
+    var barId = setInterval(frame, 37.5);
     function frame() {
         if (width >= 100) {
             clearInterval(barId);
@@ -126,8 +155,11 @@ const display_question = async ()  => {
     for (const rb of radioAnswers) {
         rb.checked = false;
     }
+    question = null;
+    while (question == null) {
+        question = await fetch_question();
+    }
     const q = document.querySelector('#q');
-    question = await fetch_question();
     q.innerHTML = `${question.q}`;
     const answers = question.opt;
     for (let i = 0; i < answers.length; i++) {
@@ -137,30 +169,6 @@ const display_question = async ()  => {
     progressBar();
 }
 
-// Save each question result in Array to calculate at the end.
-var results = [];
-
-const save_result = () => {
-    for (let i = 0; i < radioAnswers.length; i++) {
-        if (radioAnswers[i].checked) {
-            results.push([radioAnswers[i].value, question.id]);
-            count++;
-        }
-    }
-}
-
-// Fetch score from the game just played
-const get_score = async () => {
-    const response = await fetch('http://localhost:5000/api/calculate-score', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(results)
-    });
-    const result = await response.json();
-    return result;
-}
 
 // Background Styles Change Color
 const fondoanime = document.querySelector(".contenedor-fondo-animado");
@@ -204,14 +212,11 @@ const finish_game = async () => {
             });
             const result = await response.json();
             if (result.success == true) {
+                // document.querySelector("#modal-show-result").
+                //     innerHTML = `Tu puntaje: ${score.score}`;
                 document.querySelector("#modal-show-result").
-                    innerHTML = `Tu puntaje: ${score.score}`;
+                    appendChild(populateResultsTable(result.stats));
                 document.querySelector("#triggerModal").click();
-                // const stats = {
-                //     "questions": queries,
-                //     "answers": results,
-                //     "results": score.stats
-                // }
             }
         } catch (err) {
             alert(err);
@@ -228,10 +233,66 @@ setTimeout(() => {
     // Activar loop de Questions, 12s
     timer = new Timer(function() {
         display_question();
-    }, 12000); //ms
+    }, 15000); //ms
 }, 3000);
 
 
 setTimeout(() => {
     finish_game();
-}, 45000);
+}, 15000);
+
+//-------------------------------------------------------------------------------------
+
+// For Modal
+document.querySelector("#triggerModal").style.display = 'none';
+document.querySelector("#play-again").addEventListener("click", () => {
+    window.location.reload();
+});
+document.querySelector("#home").addEventListener("click", () => {
+    window.location.href = "http://localhost:5000/home";
+});
+document.querySelector("#scoreboard").addEventListener("click", () => {
+    window.location.href = "http://localhost:5000/scoreboard";
+});
+document.querySelector("#logout").addEventListener("click", () => {
+    window.location.href = "http://localhost:5000/logout";
+});
+
+function populateResultsTable(stats) {
+
+    // creates a <table> element and a <tbody> element
+    const tbl = document.createElement("table");
+    tbl.classList.add("match-results");
+    const tblBody = document.createElement("tbody");
+    const tblHead = document.createElement("thead");
+    const question = document.createElement("th");
+    const answer = document.createElement("th");
+
+    tblHead.appendChild(question).
+        appendChild(document.createTextNode("Pregunta"));
+    tblHead.appendChild(answer).
+            appendChild(document.createTextNode("Tu respuesta"));
+
+    tbl.appendChild(tblHead);
+
+    stats.forEach((result) => {
+        const row = document.createElement("tr");
+
+        const cellQuestion = document.createElement("td");
+        const cellQuestionText = document.createTextNode(`${result.question}`);
+        cellQuestion.appendChild(cellQuestionText);
+        
+        const cellAnswer = document.createElement("td");
+        const cellAnswerText = document.createTextNode(`${result.answer}`);
+        cellAnswer.appendChild(cellAnswerText);
+
+        row.appendChild(cellQuestion);
+        row.appendChild(cellAnswer);
+
+        // add the row to the end of the table body
+        tblBody.appendChild(row);
+    });
+
+    tbl.appendChild(tblBody);
+    return tbl;
+}

@@ -21,10 +21,14 @@ class DB:
     def __init__(self) -> None:
         """Initialize a new DB instance
         """
-        self._engine = create_engine("mysql+pymysql://ayrton:aaa@database:3306/movietrivia?charset=utf8mb4", echo=False)
-        User.metadata.create_all(self._engine)
-        Question.metadata.create_all(self._engine)
-        History.metadata.create_all(self._engine)
+        self._engine = create_engine(
+            "mysql+pymysql://ayrton:aaa@localhost:3306/movietrivia?charset=utf8mb4",
+            echo=False,
+            pool_pre_ping=True
+        )
+        # User.metadata.create_all(self._engine)
+        # Question.metadata.create_all(self._engine)
+        # History.metadata.create_all(self._engine)
         self.__session = None
 
     @property
@@ -45,6 +49,7 @@ class DB:
 
         self._session.add(new_user)
         self._session.commit()
+        self._session.close()
 
         return new_user
 
@@ -69,6 +74,7 @@ class DB:
             raise Exception
 
         self._session.commit()
+        self._session.close()
         return None
 
     def insert_data(self, filename: str) -> bool:
@@ -84,6 +90,7 @@ class DB:
                     )
                     self._session.add(new_question)
                 self._session.commit()
+                self._session.close()
                 return True
         except Exception as e:
             print(e)
@@ -93,24 +100,35 @@ class DB:
         """method to retrieve random question
         for using in a trivia match"""
         question = self._session.query(Question).get(question_id)
-        question = question.to_dict()
-        del question["a"]
-        question['opt'] = [op.strip() for op in question['opt'].split(',')]
-        random.shuffle(question['opt'])
+        self._session.close()
+        if question:
+            question = question.to_dict()
+            del question["a"]
+            question['opt'] = [op.strip() for op in question['opt'].split(',')]
+            random.shuffle(question['opt'])
         return question
 
     def get_match_score(self, answers: list) -> dict:
-        """method to get the total score of one played match"""
+        """method to get the total score + stats of the match just played"""
         score: int = 0
         stats = []
         for answer in answers:
             question = self._session.query(Question).get(answer[1])
             if question.a.strip() == answer[0]:
                 score += 50
-                stats.append(True)
+                stats.append({
+                    "question": question.q,
+                    "answer": answer[0],
+                    "success": True
+                })
             else:
-                score -= 10
-                stats.append(False)
+                score -= 5
+                stats.append({
+                    "question": question.q,
+                    "answer": answer[0],
+                    "success": True
+                })
+        self._session.close()
         return {
             "score": score if score > 0 else 0,
             "stats": stats
@@ -127,6 +145,7 @@ class DB:
             )
             self._session.add(match)
             self._session.commit()
+            self._session.close()
             return True
         except Exception as e:
             print(e)
@@ -135,6 +154,6 @@ class DB:
     def scoreboard(self) -> list:
         """method to retrieve history of matches all time"""
         query = self._session.query(History)
-
         history = query.all()
+        self._session.close()
         return [match.to_dict() for match in history]
